@@ -1,0 +1,92 @@
+#Problem 1
+#a
+college=read.csv("~/Downloads/College.csv", header=TRUE)
+
+#b
+rownames(college)=college[,1]
+college=college[,-1]
+
+#c
+#i use summary() function to produce numerical summary of the variables in the data set
+summary(college)
+
+#ii use pairs() function to produce a scatterplot mattrix of the first 10 columns or variables of the data
+pairs(College[,1:10])
+
+#iii create side by side boxplots of Outstate vs Private
+boxplot(Outstate~Private, data=college, xlab="Private", ylab="Outstate")
+
+#iv Create a new qualitative variable, called Elite, by binning the Top10per variable
+Elite=rep("No",nrow(college))
+Elite[college$Top10per>50]="Yes"
+Elite=as.factor(Elite)
+college=data.frame(college,Elite)
+summary(college) 
+#There are 78 elite colleges, 699 non-elite
+
+#v Use hist() function to produce histograms with differing numbers of bins for quantitative variables
+par(mfrow=c(2,2))
+hist(college$Enroll, breaks=25, main="Enroll")
+hist(college$Top10perc, breaks = 50, main ="Top10perc")
+hist(college$Apps, breaks=50)
+hist(college$F.Undergrad)
+
+# Loading the data into R went smoothly once I figured out how to state the directory and where R should look fort the college.csv file. I was also able to load the data through the R interface features (file, import data set ... etc.) but found it easier to just state the command once the location of the file was made clear. The summary() function was pretty straightforward. It just displayed a numerical sumary of each variable giving information such as min, max, mean etc. It took me a while to figure out the easiest way to create the various type of graphs but the par(mfrow) function made the histograms much easier to view by dividing the display allowing four separate histograms to be viewed simultaneously. 
+
+#Problem 2
+set.seed(1)
+x=rnorm(100, mean=0, sd=sqrt(2))
+eps=rnorm(100, mean=0, sd=sqrt(.5))
+
+
+y=-2+(.75*x)+eps
+summary(y)
+plot(y)
+#length of y us 100, B0 and B1 is -2 and .75
+
+
+#Problem 3
+#1
+library(readr)
+Auto <- read_csv("Downloads/Auto.csv", header=TRUE)
+data(Auto)
+str(Auto) 
+View(Auto)
+#quantitative: mpg,cylinders,displacement,horsepower,weight,acceleration,year
+#qualitative: origin,name
+
+#2
+range(Auto$mpg)
+range(Auto$cylinders)
+range(Auto$displacement)
+Horsepower = na.omit(as.numeric(Auto$horsepower))
+range(Horsepower)
+range(Auto$weight)
+range(Auto$acceleration)
+range(Auto$year)
+range(Auto$origin)
+range(Auto$name)
+#[1] "?"  "98" horsepower still displays "?" after str and na.omit functions applied to dataset, I solved this by making a new column name, converting the original horsepower column from string to numeric, then stripped the column of null values and worked with Horsepower for the rest of the assignment 
+
+sapply(Auto[,1:3], mean)
+sapply(Auto[,1:3], sd)
+mean(Horsepower)
+sd(Horsepower)
+sapply(Auto[,5:7], mean)
+sapply(Auto[,5:7], sd)
+
+#3
+pairs(Auto[,1:3])
+plot(Horsepower)
+pairs(Auto[,5:7])
+
+#4
+cor(Auto$mpg,Auto$cylinders) 
+
+#5
+linearAuto=lm(mpg ~ displacement*cylinders, data = Auto[,1:3])
+summary(linearAuto)
+plot(linearAuto)
+linearAuto2=lm(mpg ~ displacement:cylinders, data = Auto[,1:3])
+summary(linearAuto2)
+plot(linearAuto2)
