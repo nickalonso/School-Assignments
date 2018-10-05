@@ -1,5 +1,4 @@
-    import java.util.Scanner;
-
+import java.util.Scanner;
     public class MaxOverpayment {
         public static int payCalc(int bill, int payment) {
             int change;
