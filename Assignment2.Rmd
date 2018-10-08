@@ -1,0 +1,121 @@
+#Assignment 2
+#3,4,8,10,14
+
+#3
+#a. iii. males will earn more on average provided GPA is high enough
+#b. female(1),IQ(110),GPA(4.0)
+#50+20(4.0)+.07(110)+35+.01(4*110)-10(4)= 137.1 thousand dollars a year
+#c false, in order to make an assumtion about the null hypothesis you look at the P-value, not the coefficient
+
+#4 
+#a. Most likely a lower RSS for the cubic regression because you could fit a better line through the data then that of the Linear regression
+#b here the linear regression would have a lower RSS do to overfitting the data which causes higher error
+#c the training RSS for cubic regression would be lower because it is more flexible and fit the data better regardless
+#d Not enough info, have no idea
+
+#8
+Auto=read.csv("~/Downloads/Auto.csv", header=TRUE, na.strings="?")
+Auto=na.omit(Auto)
+summary(Auto)
+Horsepower = na.omit(as.numeric(Auto$horsepower))
+summary(Horsepower)
+lm.fit=lm(mpg~Horsepower,data=Auto)
+attach(Auto)
+summary(lm.fit)
+
+#i. Yes there is a relationship mpg~horsepower. the Fstatistic 599.7 > 1 and the P-value is incredibly small < 2.2e-16
+#ii
+summary(lm.fit)$sigma
+summary(lm.fit)$r.sq
+#60.59% of the deviation in mpg is due to horsepower
+#iii negative, higher horsepower seems to lead to less mpg when looking at the data 
+#iv.
+predict(lm.fit,data.frame(Horsepower=(c(98))),interval="confidence") 
+#[23.97,24.96]
+predict(lm.fit,data.frame(Horsepower=(c(98))),interval="prediction") 
+#[14.8,34.12]
+
+#b 
+plot(Horsepower,mpg)
+abline(lm.fit, lwd=2, col="red")
+#c
+par(mfrow=c(2,2))
+plot(lm.fit)
+#some of these do not look linear
+
+#10
+#a
+load("~/Documents/ISLR/data/Carseats.rda")
+summary(Carseats)
+attach(Carseats)
+sales1=lm(Sales~Price+Urban+US)
+summary(sales1)
+#b For Price, there seems to be a relationship sales~price due to the low P-value, as price increases, sales decrease, for UrbanYes there does not appear to be a relationships between sales~urban due to the high P-Vauue, almost 1, (.936), and for USYes there does appear to be a relationships between sales~US again due to the small P value, if the store is in the US, sales increase
+#c Sales=13.04+(-0.05Price)+(-0.02UrbanYes)+(1.2USYes)
+#d Price and USYes
+#e
+sales2=lm(Sales~Price+US)
+summary(sales)
+#f
+summary(sales2)$sigma
+summary(sales2)$r.sq
+#g
+confint(sales2)
+#h
+plot(predict(sales2),rstudent(sales2))
+plot(hatvalues(sales2))
+which.max(hatvalues(sales2))
+par(mfrow=c(2,2))
+plot(sales2)
+#Several points here have very high leverage
+
+#14
+#a
+set.seed(1)
+x1=runif(100)
+x2=0.5*x1+rnorm(100/10)
+y=2+2*x1+0.3*x2+rnorm(100)
+#Y=2+2X1+.3X2+e
+#B0=2, B1=2, B2=.3
+
+#b
+cor(x1,x2)
+plot(x1,x2)
+#c
+colin=lm(y~x1+x2)
+summary(colin)
+#we can reject the null hypothesis here due to the small P-value for both B1 and B2
+
+#d
+colin2=lm(y~x1)
+summary(colin2)
+#reject null hypothesis due to small p-value
+
+#e
+colin3=lm(y~x2)
+summary(colin3)
+#reject null hypothesis due to small p-value
+
+#f no, x1 and x2 have consistent results. This is due to collinearity 
+
+#g
+x1=c(x1,0.1)
+x2=c(x2,0.8)
+y=c(y,6)
+reDo = lm(y~x1+x2)
+summary(reDo)
+reDo2=lm(y~x1)
+summary(reDo2)
+reDo3=lm(y~x2)
+summary(reDo3)
+#Both P-values still remain extremely small so I do not see a significant effecrt on the data
+par(mfrow=c(2,2))
+plot(reDo)
+par(mfrow=c(2,2))
+plot(reDo2)
+par(mfrow=c(2,2))
+plot(reDo3)
+plot(predict(reDo), rstudent(reDo))
+plot(predict(reDo2), rstudent(reDo2))
+plot(predict(reDo3), rstudent(reDo3))
+#the first and second graphs have high leverage points and the third graph looks relativly even cut off at -2 and 2
