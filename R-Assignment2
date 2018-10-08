@@ -31,7 +31,13 @@ hist(college$Top10perc, breaks = 50, main ="Top10perc")
 hist(college$Apps, breaks=50)
 hist(college$F.Undergrad)
 
-# Loading the data into R went smoothly once I figured out how to state the directory and where R should look fort the college.csv file. I was also able to load the data through the R interface features (file, import data set ... etc.) but found it easier to just state the command once the location of the file was made clear. The summary() function was pretty straightforward. It just displayed a numerical sumary of each variable giving information such as min, max, mean etc. It took me a while to figure out the easiest way to create the various type of graphs but the par(mfrow) function made the histograms much easier to view by dividing the display allowing four separate histograms to be viewed simultaneously. 
+# Loading the data into R went smoothly once I figured out how to state the directory and where R should look fort the 
+#college.csv file. I was also able to load the data through the R interface features 
+#(file, import data set ... etc.) but found it easier to just state the command once the location of the file was made clear. 
+#The summary() function was pretty straightforward. It just displayed a numerical sumary of each variable giving 
+#information such as min, max, mean etc. It took me a while to figure out the easiest way to create the various type of 
+#graphs but the par(mfrow) function made the histograms much easier to view by dividing the display allowing 
+#four separate histograms to be viewed simultaneously. 
 
 #Problem 2
 set.seed(1)
@@ -66,7 +72,9 @@ range(Auto$acceleration)
 range(Auto$year)
 range(Auto$origin)
 range(Auto$name)
-#[1] "?"  "98" horsepower still displays "?" after str and na.omit functions applied to dataset, I solved this by making a new column name, converting the original horsepower column from string to numeric, then stripped the column of null values and worked with Horsepower for the rest of the assignment 
+#[1] "?"  "98" horsepower still displays "?" after str and na.omit functions applied to dataset, 
+#I solved this by making a new column name, converting the original horsepower column from string to numeric, 
+#then stripped the column of null values and worked with Horsepower for the rest of the assignment 
 
 sapply(Auto[,1:3], mean)
 sapply(Auto[,1:3], sd)
